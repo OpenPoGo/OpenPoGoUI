@@ -26,7 +26,12 @@ gulp.task('watch', [ 'watch-styles' ]);
 
 gulp.task('default', [ 'build' ]);
 
-gulp.task('assets', function() {
+gulp.task('static', function() {
+  return gulp.src('src/*')
+             .pipe(gulp.dest('./build'));
+});
+
+gulp.task('assets', ['static'], function() {
   return gulp.src('src/assets/**/*')
              .pipe(gulp.dest('./build/assets'));
 });
