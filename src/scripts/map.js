@@ -328,7 +328,7 @@ Map.prototype.displayInventory = function(items) {
                     <a title='Drop' href="#" class="dropItemAction ${dropStyle}"><img src="./assets/img/recyclebin.png" /></a>
                 </div>
 
-                <span>x${elt.count}</span>
+                <span class="count">x${elt.count}</span>
                 <span class="imgspan"><img src="./assets/inventory/${elt.item_id}.png" /></span>
                 <span class="info">${elt.name}</span>
             </div>

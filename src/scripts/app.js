@@ -125,7 +125,7 @@
             var itemId = parent.data().id;
             var name = inventoryService.getItemName(itemId)
             var count = parent.data().count;
-            var msg = `How many ${name} would you like to drop?`;
+            var msg = `How many <b>${name}</b> would you like to drop?`;
             vex.dialog.confirm({
                 message: msg,
                 input: `
@@ -136,9 +136,11 @@
                 `,
                 callback: (value) => {
                     if(value) {
-                        count = parseInt(value.count),
+                        var drop = parseInt(value.count);
                         ga("send", "event", "drop_items", name);
-                        global.ws.emit("drop_items", { id: itemId, count: count });
+                        global.ws.emit("drop_items", { id: itemId, count: drop });
+                        parent.data("count", count - drop);
+                        parent.parent().find(".count").text(count - drop);
                     }
                 }
             });
