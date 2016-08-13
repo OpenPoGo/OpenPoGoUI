@@ -4,6 +4,7 @@ var express = require('express');
 var app = express();
 var http = require('http');
 app.use(express.static(__dirname + "/src", { index: "index.html" }));
+app.use(express.static(__dirname + "/build")); // styles and what not
 
 httpserver = http.createServer(app);
 
