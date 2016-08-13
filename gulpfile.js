@@ -5,35 +5,15 @@ var sass        = require('gulp-sass');
 var cssnano     = require('gulp-cssnano');
 var babel       = require('gulp-babel');
 var usemin      = require('gulp-usemin');
-var ghPages = require('gulp-gh-pages');
+var ghPages     = require('gulp-gh-pages');
 
 // Auto
 
 gulp.task('styles', function() {
-    return gulp.src('src/scss/*.scss')
+    return gulp.src('src/assets/css/*.scss')
                 .pipe(sass().on('error', sass.logError))
                 .pipe(cssnano())
-                .pipe(gulp.dest('./build/assets/css'));
-});
-
-gulp.task('watch-styles', function() {
-   gulp.watch('src/scss/*.scss', ['styles']);
-});
-
-gulp.task('watch', [ 'watch-styles' ]);
-
-// Main tasks
-
-gulp.task('default', [ 'build' ]);
-
-gulp.task('static', function() {
-  return gulp.src('src/*')
-             .pipe(gulp.dest('./build'));
-});
-
-gulp.task('assets', ['static'], function() {
-  return gulp.src('src/assets/**/*')
-             .pipe(gulp.dest('./build/assets'));
+                .pipe(gulp.dest('build/assets/css'));
 });
 
 gulp.task('scripts', function() {
@@ -47,7 +27,18 @@ gulp.task('scripts', function() {
                 .pipe(gulp.dest('./build'));
 });
 
-gulp.task('build', [ 'assets', 'styles', 'scripts' ]);
+gulp.task('static', function() {
+  return gulp.src(['src/**/*', '!src/scripts/**/*', '!src/assets/css/**/*', '!src/index.html'])
+             .pipe(gulp.dest('./build'));
+});
+
+gulp.task('watch-styles', function() {
+   return gulp.watch('src/assets/css/*.scss', ['styles']);
+});
+
+gulp.task('watch', [ 'watch-styles' ]);
+
+gulp.task('build', [ 'static', 'styles', 'scripts' ]);
 
 gulp.task('deploy:staging', ['build'], function() {
   return gulp.src([
@@ -60,3 +51,5 @@ gulp.task('deploy:production', ['build'], function() {
       './build/**/*'
     ]).pipe(gulp.dest('./build')).pipe(ghPages({remoteUrl: "https://github.com/OpenPoGo/OpenPoGoUI.git"}));
 });
+
+gulp.task('default', [ 'build' ]);
