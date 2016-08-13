@@ -44,8 +44,14 @@ gulp.task('scripts', function() {
 
 gulp.task('build', [ 'assets', 'styles', 'scripts' ]);
 
-gulp.task('deploy', ['build'], function() {
+gulp.task('deploy:staging', ['build'], function() {
   return gulp.src([
       './build/**/*'
-    ]).pipe(gulp.dest('./build')).pipe(ghPages());
+    ]).pipe(gulp.dest('./build')).pipe(ghPages({remoteUrl: "https://github.com/nicoschmitt/openui.git"}));
+});
+
+gulp.task('deploy:production', ['build'], function() {
+  return gulp.src([
+      './build/**/*'
+    ]).pipe(gulp.dest('./build')).pipe(ghPages({remoteUrl: "https://github.com/OpenPoGo/OpenPoGoUI.git"}));
 });
