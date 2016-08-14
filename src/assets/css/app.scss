@@ -237,6 +237,10 @@ body { padding: 10px; }
         transform: translate(-50%, -50%);
         z-index: 3000;
 
+        a {
+            margin: 0 0.5em;
+        }
+
         img {
             opacity: 1;
         }

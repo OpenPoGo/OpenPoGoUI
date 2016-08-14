@@ -270,15 +270,17 @@ Map.prototype.displayPokemonList = function(all, sortBy, eggs) {
     div.html(``);
     this.pokemonList.forEach(function(elt) {
         var canEvolve = elt.canEvolve && !elt.inGym && elt.candy >= elt.candyToEvolve;
-        var evolveStyle = canEvolve ? "" : "style='display:none'";
+        var evolveStyle = canEvolve ? "" : "hide";
         var evolveClass = canEvolve ? "canEvolve" : "";
-        var transferStyle = elt.favorite ? "style='display:none'" : "";
+        var transferClass = elt.favorite ? "hide" : "";
         var candyStyle = elt.canEvolve ? "" : "style='display:none'";
+        var fav = elt.favorite ? "set" : "unset";
         div.append(`
             <div class="pokemon">
                 <div class="transfer" data-id='${elt.id}'>
-                    <a title='Transfer' href="#" class="transferAction ${transferStyle}"><img src="./assets/img/recyclebin.png" /></a>
-                    <a title='Evolve' href="#" class="evolveAction" ${evolveStyle}><img src="./assets/img/evolve.png" /></a>
+                    <a title='(Un)Favorite' href="#" class="favoriteAction"><img src="./assets/img/favorite_${fav}.png" /></a>
+                    <a title='Transfer' href="#" class="transferAction ${transferClass}"><img src="./assets/img/recyclebin.png" /></a>
+                    <a title='Evolve' href="#" class="evolveAction ${evolveStyle}"><img src="./assets/img/evolve.png" /></a>
                 </div>
                 <span class="imgspan ${evolveClass}"><img src="./assets/pokemon/${elt.pokemonId}.png" /></span>
                 <span class="name">${elt.name}</span>

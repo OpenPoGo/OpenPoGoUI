@@ -123,6 +123,18 @@
                 parent.parent().fadeOut();
             });
         });
+        
+        $(".inventory .data").on("click", "a.favoriteAction", function() {
+            var parent = $(this).parent();
+            var id = parent.data().id;
+            var idx = global.map.pokemonList.findIndex(p => p.id == id);
+            var selected = global.map.pokemonList[idx];
+            selected.favorite = !selected.favorite;
+            var name = inventoryService.getPokemonName(selected.pokemonId);
+            ga("send", "event", "favorite", name);
+            $(this).find("img").attr('src', `./assets/img/favorite_${selected.favorite ? 'set' : 'unset'}.png`);
+            global.ws.emit("favorite_pokemon", { id: id, favorite: selected.favorite });
+        });
 
         $(".inventory .data").on("click", "a.dropItemAction", function() {
             var parent = $(this).parent();
