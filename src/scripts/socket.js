@@ -151,7 +151,7 @@ function startListenToSocket() {
         global.map.displayInventory(items);
     });
     socket.on("pokemon_list", msg => {
-        //console.log(msg);
+        console.log(msg);
         var pkm = Array.from(msg.pokemon, p => {
             var pkmInfo = global.pokemonSettings[p.pokemon_id - 1] || {};
             return {
@@ -165,7 +165,7 @@ function startListenToSocket() {
                 name: p.nickname || inventory.getPokemonName(p.pokemon_id),
                 candy: msg.candy[pkmInfo.family_id] || 0,
                 candyToEvolve: pkmInfo.candy_to_evolve,
-                favorite: p.favorite > 0,
+                favorite: p.favorite == "True",
                 stats: {
                     atk: p.attack,
                     def: p.defense,
