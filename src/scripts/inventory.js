@@ -1,25 +1,67 @@
 (function() {
     var allPokemon = null;
     var allItems = null;
+    var allMoves = null;
 
     var service = {};
 
     service.init = function(locale, callback) {
         locale = locale || "en";
         $.when(
-            $.ajax({
-                url: `assets/json/pokemon.${locale}.json`,
-                success: (result) => { allPokemon = (typeof result == "string" ? JSON.parse(result) : result); }
-            }),
+            // $.ajax({
+            //     url: `assets/json/pokemon.${locale}.json`,
+            //     success: (result) => { allPokemon = (typeof result == "string" ? JSON.parse(result) : result); }
+            // }),
             $.ajax({
                 url: `assets/json/inventory.${locale}.json`,
                 success: (result) => { allItems = (typeof result == "string" ? JSON.parse(result) : result); }
+            }),
+            $.ajax({
+                url: `assets/json/pokemondata.json`,
+                success: (result) => { allPokemon = (typeof result == "string" ? JSON.parse(result) : result); }
+            }),
+            $.ajax({
+                url: `assets/json/pokemonmove.json`,
+                success: (result) => { allMoves = (typeof result == "string" ? JSON.parse(result) : result); }
             })
         ).then(callback);
     }
 
     service.getPokemonName = function(id) {
-        return allPokemon[id];
+        return allPokemon[id].Name;
+    }
+
+    service.getPokemonMove = function(move) {
+        return allMoves[move].name;
+    }
+
+    service.getPokemonMoveFormatted = function(id, move1, move2) {
+      var pkmAttk1 = jQuery.extend([], allPokemon[id].FastAttack);
+      var pkmAttk2 = jQuery.extend([], allPokemon[id].ChargeAttack);
+      var tmp = move1;
+      var fast = false;
+      if (tmp.indexOf(' Fast')>-1) {
+          tmp = tmp.substr(0, tmp.indexOf(' Fast'));
+          fast = true
+      }
+      for (var k in pkmAttk1){
+          if (pkmAttk1[k].indexOf(tmp)>-1) {
+            pkmAttk1[k] = "<span style='color: red;'>"+pkmAttk1[k]+(fast?" - Fast":"")+"</span>";
+          } else{
+            pkmAttk1[k] = "<span >"+pkmAttk1[k]+(fast?" - Fast":"")+"</span>";
+          }
+          fast=false;
+      }
+      tmp = move2;
+      if (tmp.indexOf(' Fast')>-1) tmp = tmp.substr(0, tmp.indexOf(' Fast'));
+      for (var k in pkmAttk2){
+          if (pkmAttk2[k].indexOf(tmp)>-1) {
+            pkmAttk2[k] = "<span style='color: red;'>"+pkmAttk2[k]+"</span>";
+          }else{
+            pkmAttk2[k] = "<span>"+pkmAttk2[k]+"</span>";
+          }
+      }
+      return pkmAttk1.join('')+pkmAttk2.join('');
     }
 
     service.getItemName = function(id) {

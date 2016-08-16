@@ -254,7 +254,15 @@ Map.prototype.displayPokemonList = function(all, sortBy, eggs) {
         localStorage.setItem("sortPokemonBy", sortBy);
     }
 
-    if (sortBy == "pokemonId") {
+     if (sortBy == "creation_time_ms") {
+        this.pokemonList = this.pokemonList.sort((p1, p2) => {
+            if (p1[sortBy] != p2[sortBy]) {
+                return p2[sortBy] - p1[sortBy];
+            }
+            var sort2 = p2["cp"] != p1["cp"] ? "cp" : "iv";
+            return p2[sort2] - p1[sort2];
+        });
+    } else if (sortBy == "pokemonId") {
         this.pokemonList = this.pokemonList.sort((p1, p2) => {
             if (p1[sortBy] != p2[sortBy]) {
                 return p1[sortBy] - p2[sortBy];
@@ -288,10 +296,15 @@ Map.prototype.displayPokemonList = function(all, sortBy, eggs) {
         var fav = elt.favorite ? "set" : "unset";
         div.append(`
             <div class="pokemon">
-                <div class="transfer" data-id='${elt.id}'>
-                    <a title='(Un)Favorite' href="#" class="favoriteAction"><img src="./assets/img/favorite_${fav}.png" /></a>
-                    <a title='Transfer' href="#" class="transferAction ${transferClass}"><img src="./assets/img/recyclebin.png" /></a>
-                    <a title='Evolve' href="#" class="evolveAction ${evolveStyle}"><img src="./assets/img/evolve.png" /></a>
+                <div class="transfer" data-id='${elt.id}' data-height='${elt.height_m}' data-weight='${elt.weight_kg}' data-creation_time_ms='${elt.creation_time_ms}' style="width: 100%;flex-direction:column;">
+                    <div style="display: flex; flex-direction: column; color: black;" class='info'>
+                      '${elt.moveFormatted}'                  
+                    </div>
+                    <div style='display: flex;margin: auto;'>
+                      <a title='(Un)Favorite' href="#" class="favoriteAction"><img src="./assets/img/favorite_${fav}.png" /></a>
+                      <a title='Transfer' href="#" class="transferAction ${transferClass}"><img src="./assets/img/recyclebin.png" /></a>
+                      <a title='Evolve' href="#" class="evolveAction ${evolveStyle}"><img src="./assets/img/evolve.png" /></a>
+                    </div>
                 </div>
                 <span class="imgspan ${evolveClass}"><img src="./assets/pokemon/${elt.pokemonId}.png" /></span>
                 <span class="name">${elt.name}</span>
