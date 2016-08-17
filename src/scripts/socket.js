@@ -44,7 +44,7 @@ function startListenToSocket() {
         global.connected = true;
         $(".loading").text("Waiting to get GPS coordinates from Bot...");
     });
-    socket.on('disconnect', function() {
+    socket.on('disconnect', () => {
         global.connected = false;
     });
     socket.on("bot_initialized", msg => {
@@ -201,6 +201,9 @@ function startListenToSocket() {
     socket.on("route", route => {
         global.map.setRoute(Array.from(route, pt => { return { lat: pt[0], lng: pt[1] } }));
     });
+    socket.on("manual_destination_reached_event", () => {
+        global.map.manualDestinationReached();
+    })
 }
 
 function errorToast(message) {

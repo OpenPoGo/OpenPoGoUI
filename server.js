@@ -39,8 +39,8 @@ if (process.env.FAKE_BOT_ENABLED == "true") {
                     pokemon_id: Math.floor(Math.random() * 150) + 1,
                     combat_power: 1000,
                     potential: 0.8,
-                    combat_power_multiplier: 0.5,
-                    additional_cp_multiplier: 0.3
+                    combat_power_multiplier: 0.094,
+                    additional_cp_multiplier: 0
                 },
                 position: { latitude: ppos[0], longitude: ppos[1] }
             });
@@ -60,17 +60,17 @@ if (process.env.FAKE_BOT_ENABLED == "true") {
                 pokemon: [
                     { 
                         unique_id: "1234", pokemon_id: 10, combat_power: 1000, potential: 0.5,
-                        combat_power_multiplier: 0.5, additional_cp_multiplier: 0.3,
+                        combat_power_multiplier: 0.094, additional_cp_multiplier: 0,
                         attack: 10, defense: 10, hp: 50, max_hp: 50, stamina: 10, favorite: 0
                     },
                     { 
                         unique_id: "456", pokemon_id: 100, combat_power: 1000, potential: 0.5,
-                        combat_power_multiplier: 0.5, additional_cp_multiplier: 0.3,
+                        combat_power_multiplier: 0.094, additional_cp_multiplier: 0,
                         attack: 10, defense: 10, hp: 50, max_hp: 50, stamina: 10, favorite: 1
                     },
                     { 
                         unique_id: "4567", pokemon_id: 42, combat_power: 1000, potential: 0.5,
-                        combat_power_multiplier: 0.5, additional_cp_multiplier: 0.3,
+                        combat_power_multiplier: 0.094, additional_cp_multiplier: 0,
                         attack: 10, defense: 10, hp: 50, max_hp: 50, stamina: 10, favorite: 1
                     }
                 ]

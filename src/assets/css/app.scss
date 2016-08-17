@@ -288,10 +288,10 @@ body, html, .content {
     align-content: flex-end;
     z-index: 990;
     overflow: hidden;
-    width: 15%;
     padding: 10px;
     background-color: $white;
 
+    width: 10%;
     @media #{$medium-only} { width: percentage(1/5); }
     @media #{$small-and-down} { width: percentage(1/4); }
 
@@ -349,3 +349,11 @@ body, html, .content {
   right: 10px;
 }
 
+.dest {
+    font-size: 1.1em;
+    margin-bottom: 0.5em;
+}
+
+a.destBtn {
+    color: $white;
+}

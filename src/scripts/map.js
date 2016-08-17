@@ -30,8 +30,11 @@ var Map = function(parentDiv) {
 
     L.control.layers(baseLayers, overlays).addTo(this.map);
 
+    this.map.on('singleclick', (function(ev) { this.setDestination(ev.latlng) }).bind(this));
+
     this.path = null;
     this.route = null;
+    this.destination = null;
 
     this.steps = [];
     this.catches = [];
@@ -127,7 +130,7 @@ Map.prototype.addToPath = function(pt) {
         this.path.addLatLng(latLng);
         this.me.setLatLng(latLng).getPopup().setContent(`${pt.lat.toFixed(4)},${pt.lng.toFixed(4)}`);
         if (global.config.followPlayer) {
-            this.map.panTo(latLng, true);
+            this.map.panTo(latLng, { animate: true });
         }
     }
 }
@@ -294,7 +297,7 @@ Map.prototype.displayPokemonList = function(all, sortBy, eggs) {
                     <a title='Evolve' href="#" class="evolveAction ${evolveStyle}"><img src="./assets/img/evolve.png" /></a>
                 </div>
                 <span class="imgspan ${evolveClass}"><img src="./assets/pokemon/${elt.pokemonId}.png" /></span>
-                <span class="name">${elt.name}</span>
+                <span class="name">${elt.name} lvl ${elt.lvl}</span>
                 <span class="info">CP: <strong>${elt.cp}</strong> IV: <strong>${elt.iv}%</strong></span>
                 <span class="info hide-on-small-only">ATK: <strong>${elt.stats.atk}</strong> DEF: <strong>${elt.stats.def}</strong> STA: <strong>${elt.stats.sta}</strong></span>
                 <span class="info">Candy: ${elt.candy}<span ${candyStyle}>/${elt.candyToEvolve}</span></span>
@@ -350,6 +353,28 @@ Map.prototype.displayInventory = function(items) {
     $(".inventory").show().addClass("active");
 };
 
+Map.prototype.setDestination = function(latlng) {
+    var popup = L.popup().setLatLng(latlng)
+                 .setContent(`<div class='dest'>${latlng.lat.toFixed(6)}, ${latlng.lng.toFixed(6)}</div><div class="center-align"><a class="destBtn waves-effect waves-light btn">Go?</a></div>`)
+                 .openOn(this.map);
+
+    $(".destBtn").click((function() {
+        this.map.closePopup(popup);
+        console.log(`Set destination: ${latlng.lat}, ${latlng.lng}`);
+        if (this.destination) {
+            this.layerPath.removeLayer(this.destination);
+        }
+
+        this.destination = L.marker(latlng, { zIndexOffset: 199 }).bindPopup(`${latlng.lat}, ${latlng.lng}`).addTo(this.layerPath);
+        global.ws.emit("set_destination", latlng);
+    }).bind(this));
+}
+
+Map.prototype.manualDestinationReached = function() {
+    this.layerPath.removeLayer(this.destination);
+    this.destination = null;
+}
+
 // Fix zindex for groups
 
 L.MarkerCluster.prototype.true_initialize = L.MarkerCluster.prototype.initialize;
@@ -357,3 +382,31 @@ L.MarkerCluster.prototype.initialize = function (group, zoom, a, b) {
     this.true_initialize(group, zoom, a, b);
     this.setZIndexOffset(200);
 }
+
+// Add event for single click
+
+L.Evented.addInitHook( function () {
+    this._singleClickTimeout = null;
+    this.on('click', this._scheduleSingleClick, this);
+    this.on('dblclick dragstart zoomstart', this._clearSingleClickTimeout.bind(this), this);
+});
+
+L.Evented.include({
+    _scheduleSingleClick: function(e) {
+        this._clearSingleClickTimeout();
+        this._singleClickTimeout = setTimeout(this._fireSingleClick.bind(this, e), 500)
+    },
+
+    _fireSingleClick: function(e){
+        if (!e.originalEvent._stopped) {
+            this.fire('singleclick', L.Util.extend(e, { type : 'singleclick' }));
+        }
+    },
+
+    _clearSingleClickTimeout: function(){
+        if (this._singleClickTimeout != null) {
+            clearTimeout(this._singleClickTimeout);
+            this._singleClickTimeout = null;
+        }
+    }
+});
