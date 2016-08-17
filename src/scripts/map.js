@@ -99,7 +99,7 @@ Map.prototype.initPath = function() {
 Map.prototype.initCatches = function() {
     for (var i = 0; i < this.catches.length; i++) {
         var pt = this.catches[i];
-        var icon = L.icon({ iconUrl: `./assets/pokemon/${pt.id}.png`, iconSize: [50, 50], iconAnchor: [20, 20]});
+        var icon = L.icon({ iconUrl: `./assets/pokemon/${pt.id}.png`, iconSize: [60, 60], iconAnchor: [30, 30]});
         var pkm = `${pt.name} <br /> Cp:${pt.cp} Iv:${pt.iv}%`;
         if (pt.lvl) {
             pkm = `${pt.name} (lvl ${pt.lvl}) <br /> Cp:${pt.cp} Iv:${pt.iv}%`;
@@ -157,7 +157,7 @@ Map.prototype.addCatch = function(pt) {
         this.layerCatches.clearLayers();
         this.initCatches();
     } else {
-        var icon = L.icon({ iconUrl: `./assets/pokemon/${pt.id}.png`, iconSize: [50, 50], iconAnchor: [25, 25] });
+        var icon = L.icon({ iconUrl: `./assets/pokemon/${pt.id}.png`, iconSize: [60, 60], iconAnchor: [30, 30] });
         L.marker([pt.lat, pt.lng], {icon: icon, zIndexOffset: 100 }).bindPopup(pkm).addTo(this.layerCatches);
     }
 }
@@ -365,7 +365,7 @@ Map.prototype.setDestination = function(latlng) {
             this.layerPath.removeLayer(this.destination);
         }
 
-        this.destination = L.marker(latlng, { zIndexOffset: 199 }).bindPopup(`${latlng.lat}, ${latlng.lng}`).addTo(this.layerPath);
+        this.destination = L.marker(latlng, { zIndexOffset: 199, icon: new RedIcon() }).bindPopup(`${latlng.lat}, ${latlng.lng}`).addTo(this.layerPath);
         global.ws.emit("set_destination", latlng);
     }).bind(this));
 }
@@ -374,6 +374,14 @@ Map.prototype.manualDestinationReached = function() {
     this.layerPath.removeLayer(this.destination);
     this.destination = null;
 }
+
+// Red icon
+
+var RedIcon = L.Icon.Default.extend({
+    options: {
+        iconUrl: 'assets/img/marker-icon-red.png' 
+    }
+});
 
 // Fix zindex for groups
 
