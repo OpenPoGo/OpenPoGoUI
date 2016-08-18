@@ -36,7 +36,7 @@ var Map = function(parentDiv) {
     }).bind(this));
 
     // restore saved base map
-    base = localStorage.getItem("layer");
+    var base = localStorage.getItem("layer");
     if (base) {
         $(`.leaflet-control-layers-base span:contains('${base}')`).first().prev().click();
     }
