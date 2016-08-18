@@ -28,7 +28,18 @@ var Map = function(parentDiv) {
         "Catches": this.layerCatches
     };
 
+    // save selected base map on click
     L.control.layers(baseLayers, overlays).addTo(this.map);
+    this.map.on('baselayerchange', (function(ev) { 
+        let name = ev.name;
+        localStorage.setItem("layer", name);
+    }).bind(this));
+
+    // restore saved base map
+    base = localStorage.getItem("layer");
+    if (base) {
+        $(`.leaflet-control-layers-base span:contains('${base}')`).first().prev().click();
+    }
 
     this.map.on('singleclick', (function(ev) { this.setDestination(ev.latlng) }).bind(this));
 
