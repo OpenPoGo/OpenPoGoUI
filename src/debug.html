@@ -54,7 +54,7 @@
         }
 
         $(function() {
-            $("#backBtn").click(() => { window.location = "/"; });
+            $("#backBtn").click(() => { window.location = "index.html"; });
 
             $("#clearBtn").click(() => {
                 localStorage.removeItem("config");
@@ -89,12 +89,12 @@
                     <div class="collapsible-body"><div id="debug-config"></div></div>
                 </li>
                 <li>
-                    <div class="collapsible-header"><i class="material-icons">sd_storage</i>Session Storage</div>
-                    <div class="collapsible-body"><div id="debug-session"></div></div>
-                </li>
-                <li>
                     <div class="collapsible-header"><i class="material-icons">sd_storage</i>Local Storage</div>
                     <div class="collapsible-body"><div id="debug-local"></div></div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">sd_storage</i>Session Storage</div>
+                    <div class="collapsible-body"><div id="debug-session"></div></div>
                 </li>
             </ul>
             <div class="input-field col s12">
