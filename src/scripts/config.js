@@ -24,7 +24,8 @@
             maxCaught: 50,
             mathPath: 10000,
             maxPokestops: 250
-        }
+        },
+        version: "online"
     };
 
     var service = {};
@@ -38,26 +39,26 @@
 
         var configfile = path.join(remote.app.getPath("userData"), "settings.json");
 
-        const { version } = require("./package.json");
-
-        service.save = function(config) {
-            fs.writeFileSync(configfile, JSON.stringify(config));
-        }
-
         service.load = function() {
-            var config = defaultConfig;
+            var config =  Object.assign({}, defaultConfig);
             try {
-                config = JSON.parse(fs.readFileSync(configfile, 'utf-8')); 
-                config = Object.assign({}, defaultConfig, config);
-                config.version = version;
-
+                var json = fs.readFileSync(configfile, 'utf-8')
+                if (json) Object.assign(config, JSON.parse(json));
+                
                 if (config.websocket.startsWith("ws")) config.websocket = defaultConfig.websocket;
+
                 // no ui, so force memory settings
                 config.memory = defaultConfig.memory;
             } catch(err) {
                 configService.save(defaultConfig);
+                config =  Object.assign({}, defaultConfig);
             }
+
             return config;
+        }
+
+        service.save = function(config) {
+            fs.writeFileSync(configfile, JSON.stringify(config));
         }
     } else {
         console.log("Load config from storage");
@@ -72,8 +73,6 @@
             var host = getURLParameter("websocket");
             if (host) config.websocket = host;
 
-            config.version = "online";
-
             // no ui, so force memory settings
             config.memory = defaultConfig.memory;
 
@@ -81,7 +80,6 @@
         }
 
         service.save = function(config) {
-            console.log(config);
             localStorage.setItem("config", JSON.stringify(config));
         }
     }
