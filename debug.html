@@ -5,12 +5,17 @@
     <meta charset="UTF-8">
     <title>Pokemon Bot Visualizer - Debug</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="favicon.png" />
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
-    <link rel="stylesheet" href="assets/css/config.css">
-
+    <style>
+        .collapsible-body div {
+            overflow-wrap: break-word;
+            margin: 20px;
+        }
+    </style>
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
@@ -31,7 +36,7 @@
             while(i--) {
                 var key = sessionStorage.key(i);
                 var value = sessionStorage.getItem(key);
-                $("#debug-session").append(`<div>${key}</div><div>${value}</div>`);
+                $("#debug-session").append(`<div><b>${key}</b>: ${value}</div>`);
             }
 
             // Local
@@ -40,12 +45,16 @@
             while(i--) {
                 var key = localStorage.key(i);
                 var value = localStorage.getItem(key);
-                $("#debug-local").append(`<div>${key}</div><div>${value}</div>`);
+                if (key == "pokemonSettings") {
+                    $("#debug-local").append(`<div><b>${key}</b>: (hidden)</div>`);
+                } else {
+                    $("#debug-local").append(`<div><b>${key}</b>: ${value}</div>`);
+                }
             }
         }
 
         $(function() {
-            $("#backBtn").click(() => { window.location = "/"; });
+            $("#backBtn").click(() => { window.location = "index.html"; });
 
             $("#clearBtn").click(() => {
                 localStorage.removeItem("config");
@@ -67,40 +76,30 @@
 
             init();
         });
-    </script>    
+    </script>
   </head>
   
   <body>
     <div class="container">
-        <div class="row">
-            <div class="col s12 m10 offset-m1 l8 offset-l2">
-                <h3 class="center-align">Debug Tool</h3>
-
-                <div class="col s12">
-                    <h5>Config</h5>
-                </div>
-                <div class="col s12">
-                    <div id="debug-config"></div>
-                </div>
-
-                <div class="col s12">
-                    <h5>Session Storage</h5>
-                </div>
-                <div class="col s12">
-                    <div id="debug-session"></div>
-                </div>
-
-                <div class="col s12">
-                    <h5>Local Storage</h5>
-                </div>
-                <div class="col s12">
-                    <div id="debug-local"></div>
-                </div>
-
-                <div class="input-field col s12">
-                    <a id="backBtn" class="waves-effect waves-light btn"><i class="material-icons left">arrow_back</i>Back</a>
-                    <a id="clearBtn" class="waves-effect waves-light btn"><i class="material-icons left">delete</i>clear all</a>
-                </div>
+        <div class="col s12 m12 l10 offset-l1">
+            <h3>Debug Tool</h3>
+            <ul class="collapsible" data-collapsible="expandable">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">settings</i>Config</div>
+                    <div class="collapsible-body"><div id="debug-config"></div></div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">sd_storage</i>Local Storage</div>
+                    <div class="collapsible-body"><div id="debug-local"></div></div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">sd_storage</i>Session Storage</div>
+                    <div class="collapsible-body"><div id="debug-session"></div></div>
+                </li>
+            </ul>
+            <div class="input-field col s12">
+                <a id="backBtn" class="waves-effect waves-light btn"><i class="material-icons left">arrow_back</i>Back</a>
+                <a id="clearBtn" class="waves-effect waves-light btn"><i class="material-icons left">delete</i>clear all</a>
             </div>
         </div>
     </div>
