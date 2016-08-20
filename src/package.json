@@ -6,7 +6,7 @@
   "dependencies": {
     "leaflet": "1.0.0-rc.3",
     "materialize-css": "0.97.7",
-    "vex-js": "0.97.7",
+    "vex-js": "2.3.4",
     "leaflet.markercluster": "1.0.0-rc.1.0",
     "socket.io": "1.4.8",
     "jquery": "3.1.0",
