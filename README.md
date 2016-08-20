@@ -1,4 +1,4 @@
-[![Dependency Status](https://www.versioneye.com/user/projects/57b8bb841dcdc900430c0c18/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57b8bb841dcdc900430c0c18)
+[![Dependency Status](https://www.versioneye.com/user/projects/57b8c5e51dcdc900413eb9bd/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57b8c5e51dcdc900413eb9bd)
 
 # OpenUI for OpenGoBot
 
