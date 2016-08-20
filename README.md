@@ -1,3 +1,5 @@
+[![Dependency Status](https://www.versioneye.com/user/projects/57b8bb841dcdc900430c0c18/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57b8bb841dcdc900430c0c18)
+
 # OpenUI for OpenGoBot
 
 Alternate UI for **OpenPoGoBot**.  
