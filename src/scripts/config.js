@@ -49,6 +49,7 @@
 
                 // no ui, so force memory settings
                 config.memory = defaultConfig.memory;
+                config.version = "app";
             } catch(err) {
                 configService.save(defaultConfig);
                 config =  Object.assign({}, defaultConfig);
