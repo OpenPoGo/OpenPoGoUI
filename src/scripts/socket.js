@@ -48,7 +48,6 @@ function startListenToSocket() {
         global.connected = false;
     });
     socket.on("bot_initialized", msg => {
-        //if (Array.isArray(msg)) msg = msg.length > 0 ? msg[0] : {};
         if (msg.username) {
             console.log("Bot Ready.");
             console.log(msg);
@@ -201,9 +200,12 @@ function startListenToSocket() {
     socket.on("route", route => {
         global.map.setRoute(Array.from(route, pt => { return { lat: pt[0], lng: pt[1] } }));
     });
+    socket.on("manual_destination_reached", () => {
+        global.map.manualDestinationReached();
+    });
     socket.on("manual_destination_reached_event", () => {
         global.map.manualDestinationReached();
-    })
+    });
 }
 
 function errorToast(message) {
