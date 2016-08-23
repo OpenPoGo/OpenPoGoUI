@@ -1,0 +1,15 @@
+{
+  "name": "pogo.webui",
+  "version": "0.0.0",
+  "description": "(dummy file for versioneye)",
+  "author": "Nicolas Schmitt",
+  "dependencies": {
+    "leaflet": "1.0.0-rc.3",
+    "materialize-css": "0.97.7",
+    "vex-js": "2.3.4",
+    "leaflet.markercluster": "1.0.0-rc.1.0",
+    "socket.io": "1.4.8",
+    "jquery": "3.1.0",
+    "moment": "2.14.1"
+  }
+}
