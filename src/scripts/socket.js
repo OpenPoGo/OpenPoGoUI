@@ -203,9 +203,6 @@ function startListenToSocket() {
     socket.on("manual_destination_reached", () => {
         global.map.manualDestinationReached();
     });
-    socket.on("manual_destination_reached_event", () => {
-        global.map.manualDestinationReached();
-    });
 }
 
 function errorToast(message) {
